@@ -23,7 +23,8 @@ public class VoteServiceImpl implements IVoteService {
     @Autowired
     QuestionRepository questionrepo;
     @Override
-    public void ajoutdeletevote(Vote v,String idu, String idq) {
+    public void ajoutdeletevote(Question question,String idu, String idq) {
+        Vote v=new Vote();
         Question question = questionrepo.findById(idq).orElse(null);
         User user = userrepo.findById(idu).orElse(null);
         Vote vote =voterepo.findByQuestionAndUser(idq,idu);
@@ -39,12 +40,16 @@ public class VoteServiceImpl implements IVoteService {
         }else{
             vote.setUser(null);
             vote.setQuestion(null);
-            user.getVotes().remove(vote);
-            question.getVotes().remove(vote);
-            userrepo.save(user);
-            voterepo.save(vote);
-            questionrepo.save(question);
-            voterepo.delete(v);
+            if(user.getVotes()!=null&&question.getVotes()!=null){
+                user.getVotes().remove(vote);
+                question.getVotes().remove(vote);
+                userrepo.save(user);
+                questionrepo.save(question);
+                voterepo.save(vote);
+                voterepo.delete(v);
+            }
+
+
         }
 
     }
