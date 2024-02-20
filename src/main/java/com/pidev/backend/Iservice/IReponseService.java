@@ -14,4 +14,5 @@ public interface IReponseService {
     public Reponse affichDetailReponse(String idq);
 
     public List<Reponse> afficherReponse();
+    public List<Reponse> afficherReponsebypost(String idq);
 }

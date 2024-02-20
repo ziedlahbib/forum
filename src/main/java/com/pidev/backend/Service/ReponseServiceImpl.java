@@ -56,4 +56,10 @@ public class ReponseServiceImpl implements IReponseService {
     public List<Reponse> afficherReponse() {
         return reponserepo.findAll();
     }
+
+    @Override
+    public List<Reponse> afficherReponsebypost(String idq) {
+        Question q =questionrepo.findById(idq).orElse(null);
+        return q.getReponses();
+    }
 }

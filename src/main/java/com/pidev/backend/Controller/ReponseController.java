@@ -29,6 +29,12 @@ public class ReponseController {
         return reponseserv.affichDetailReponse(idq);
 
     }
+    @GetMapping("/get-Reponse/{id-question}")
+    @ResponseBody
+    public List<Reponse> getReponsebyquestion(@PathVariable("id-question") String idq) {
+        return reponseserv.afficherReponsebypost(idq);
+
+    }
     @GetMapping("/get-Reponse")
     @ResponseBody
     public List<Reponse> getReponsebyid() {
