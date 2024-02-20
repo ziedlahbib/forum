@@ -5,5 +5,6 @@ import com.pidev.backend.Entity.Vote;
 
 public interface IVoteService {
     public void ajoutdeletevote(Vote v,String idu , String idq);
+    public int nbvotebyquest(String idq);
 
 }

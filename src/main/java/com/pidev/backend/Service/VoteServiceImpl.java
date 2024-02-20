@@ -49,4 +49,10 @@ public class VoteServiceImpl implements IVoteService {
 
     }
 
+    @Override
+    public int nbvotebyquest(String idq) {
+        List ques =questionrepo.findAll();
+        return ques.size();
+    }
+
 }

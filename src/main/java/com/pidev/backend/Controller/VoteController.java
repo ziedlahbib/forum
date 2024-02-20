@@ -19,4 +19,10 @@ public class VoteController {
          voteserv.ajoutdeletevote(p,idu,idq);
 
     }
+    @GetMapping("/nbr-vote/{id-question}")
+    @ResponseBody
+    public void ajoutdeletevote( @PathVariable("id-question") String idq) {
+        voteserv.nbvotebyquest(idq);
+
+    }
 }
