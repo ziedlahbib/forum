@@ -19,13 +19,13 @@ public class ReponseController {
 
     @PostMapping("/add-Reponse/{id-use}/{id-question}")
     @ResponseBody
-    public Reponse ajoutReponse(@RequestBody Reponse p,@PathVariable("id-question") String idq,@PathVariable("id-use") Long idu) {
+    public Reponse ajoutReponse(@RequestBody Reponse p,@PathVariable("id-question") String idq,@PathVariable("id-use") String idu) {
         return reponseserv.ajoutReponse(p,idq,idu);
 
     }
     @GetMapping("/get-Reponse/{id-Reponse}")
     @ResponseBody
-    public Reponse getReponsebyid(@PathVariable("id-Reponse") Long idq) {
+    public Reponse getReponsebyid(@PathVariable("id-Reponse") String idq) {
         return reponseserv.affichDetailReponse(idq);
 
     }
@@ -37,13 +37,13 @@ public class ReponseController {
     }
     @PutMapping("/update-Reponse/{id-Reponse}")
     @ResponseBody
-    public Reponse upadateReponse(@RequestBody Reponse t, @PathVariable("id-Reponse") Long idq) {
+    public Reponse upadateReponse(@RequestBody Reponse t, @PathVariable("id-Reponse") String idq) {
         return reponseserv.updateReponse(idq,t);
 
     }
     @DeleteMapping("/delete-Reponse/{id-Reponse}")
     @ResponseBody
-    public void deleteReponse(@PathVariable("id-Reponse") Long idq) {
+    public void deleteReponse(@PathVariable("id-Reponse") String idq) {
         reponseserv.deleteReponse(idq);
 
     }

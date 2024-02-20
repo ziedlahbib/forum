@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Chapters")
+@Document(collection = "Question")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,7 @@ public class Question {
     private List<Reponse> reponses;
     @DBRef
     private List<Vote> votes;
+    @DBRef
+    private User user;
 
 }

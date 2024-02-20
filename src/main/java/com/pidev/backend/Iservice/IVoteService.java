@@ -4,6 +4,6 @@ import com.pidev.backend.Entity.User;
 import com.pidev.backend.Entity.Vote;
 
 public interface IVoteService {
-    public void ajoutdeletevote(Long idu , String idq);
+    public void ajoutdeletevote(Vote v,String idu , String idq);
 
 }

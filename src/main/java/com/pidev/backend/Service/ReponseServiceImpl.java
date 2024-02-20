@@ -24,7 +24,7 @@ public class ReponseServiceImpl implements IReponseService {
     QuestionRepository questionrepo;
 
     @Override
-    public Reponse ajoutReponse(Reponse q,String idq ,Long iduse) {
+    public Reponse ajoutReponse(Reponse q,String idq ,String iduse) {
 
         Question qu =questionrepo.findById(idq).orElse(null);
         User u=userrepo.findById(iduse).orElse(null);
@@ -36,19 +36,19 @@ public class ReponseServiceImpl implements IReponseService {
     }
 
     @Override
-    public Reponse updateReponse(Long idq, Reponse q) {
+    public Reponse updateReponse(String idq, Reponse q) {
         Reponse qu =reponserepo.findById(idq).orElse(null);
         qu.setContenue(q.getContenue());
         return reponserepo.save(qu);
     }
 
     @Override
-    public void deleteReponse(Long idq) {
+    public void deleteReponse(String idq) {
         reponserepo.deleteById(idq);
     }
 
     @Override
-    public Reponse affichDetailReponse(Long idq) {
+    public Reponse affichDetailReponse(String idq) {
         return reponserepo.findById(idq).orElse(null);
     }
 

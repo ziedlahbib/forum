@@ -15,10 +15,10 @@ public class QuestionController {
 
     @Autowired
     QuestionServiceImpl questionserv;
-    @PostMapping("/add-question")
+    @PostMapping("/add-question/{id-user}")
     @ResponseBody
-    public Question ajoutquestion(@RequestBody Question p) {
-        return questionserv.ajoutQuestion(p);
+    public Question ajoutquestion(@RequestBody Question p,@PathVariable("id-user") String idu) {
+        return questionserv.ajoutQuestion(p,idu);
 
     }
     @GetMapping("/get-question/{id-question}")

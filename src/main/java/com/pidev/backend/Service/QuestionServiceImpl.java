@@ -1,8 +1,10 @@
 package com.pidev.backend.Service;
 
 import com.pidev.backend.Entity.Question;
+import com.pidev.backend.Entity.User;
 import com.pidev.backend.Iservice.IQuestionService;
 import com.pidev.backend.Repository.QuestionRepository;
+import com.pidev.backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,18 @@ import java.util.List;
 public class QuestionServiceImpl implements IQuestionService {
     @Autowired
     QuestionRepository questionrepo;
+    @Autowired
+    UserRepository userepo;
 
     @Override
-    public Question ajoutQuestion(Question q) {
+    public Question ajoutQuestion(Question q,String idu) {
+        User u =userepo.findById(idu).orElse(null);
+        if(u.getQuestions()!=null){
+            u.getQuestions().add(q);
+        }
+
+        userepo.save(u);
+        q.setUser(u);
         q.setContenue(this.hashbadword(q.getContenue()));
         return questionrepo.save(q);
     }

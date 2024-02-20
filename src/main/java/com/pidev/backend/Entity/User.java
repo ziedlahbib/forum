@@ -20,12 +20,16 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "Chapters")
+@Document(collection = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String nom;
     @DBRef
     private List<Vote> votes;
+    @DBRef
+    private List<Question> questions;
+    @DBRef
+    private List<Reponse> reponses;
 }

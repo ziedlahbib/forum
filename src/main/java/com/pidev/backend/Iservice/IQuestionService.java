@@ -5,7 +5,7 @@ import com.pidev.backend.Entity.Question;
 import java.util.List;
 
 public interface IQuestionService {
-     public Question ajoutQuestion(Question q);
+     public Question ajoutQuestion(Question q,String idu);
      public Question updateQuestion(String idq ,Question q);
 
      public void deleteQuestion(String idq);
