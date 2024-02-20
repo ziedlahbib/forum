@@ -24,7 +24,9 @@ public class QuestionServiceImpl implements IQuestionService {
             u.getQuestions().add(q);
         }
 
-        userepo.save(u);
+        if (u != null) {
+            userepo.save(u);
+        }
         q.setUser(u);
         q.setContenue(this.hashbadword(q.getContenue()));
         return questionrepo.save(q);
