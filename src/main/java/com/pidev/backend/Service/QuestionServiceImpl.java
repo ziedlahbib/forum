@@ -20,7 +20,7 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public Question ajoutQuestion(Question q,String idu) {
         User u =userepo.findById(idu).orElse(null);
-        if(u.getQuestions()!=null){
+        if (u != null && u.getQuestions() != null) {
             u.getQuestions().add(q);
         }
 
@@ -33,8 +33,11 @@ public class QuestionServiceImpl implements IQuestionService {
     @Override
     public Question updateQuestion(String idq, Question q) {
         Question qu =questionrepo.findById(idq).orElse(null);
-        qu.setContenue(q.getContenue());
-        return questionrepo.save(qu);
+        if (qu != null) {
+            qu.setContenue(q.getContenue());
+            return questionrepo.save(qu);
+        }
+        return qu;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.pidev.backend.Service;
 
 import com.pidev.backend.Entity.Question;
-import com.pidev.backend.Entity.Reponse;
 import com.pidev.backend.Entity.User;
 import com.pidev.backend.Entity.Vote;
 import com.pidev.backend.Iservice.IVoteService;
@@ -9,7 +8,6 @@ import com.pidev.backend.Repository.QuestionRepository;
 import com.pidev.backend.Repository.UserRepository;
 import com.pidev.backend.Repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +42,7 @@ public class VoteServiceImpl implements IVoteService {
         }else{
             vote.setUser(null);
             vote.setQuestion(null);
-            if(user.getVotes()!=null&&question.getVotes()!=null){
+            if (question != null && user != null && user.getVotes() != null && question.getVotes() != null) {
                 user.getVotes().remove(vote);
                 question.getVotes().remove(vote);
                 userrepo.save(user);
@@ -60,7 +58,7 @@ public class VoteServiceImpl implements IVoteService {
 
     @Override
     public int nbvotebyquest(String idq) {
-        List ques =questionrepo.findAll();
+        List<Question> ques =questionrepo.findAll();
         return ques.size();
     }
 

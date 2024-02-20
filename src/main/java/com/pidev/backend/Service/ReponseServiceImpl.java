@@ -38,8 +38,13 @@ public class ReponseServiceImpl implements IReponseService {
     @Override
     public Reponse updateReponse(String idq, Reponse q) {
         Reponse qu =reponserepo.findById(idq).orElse(null);
-        qu.setContenue(q.getContenue());
-        return reponserepo.save(qu);
+        if (qu != null) {
+            qu.setContenue(q.getContenue());
+        }
+        if (qu != null) {
+            return reponserepo.save(qu);
+        }
+        return qu;
     }
 
     @Override
@@ -59,7 +64,10 @@ public class ReponseServiceImpl implements IReponseService {
 
     @Override
     public List<Reponse> afficherReponsebypost(String idq) {
-        Question q =questionrepo.findById(idq).orElse(null);
-        return q.getReponses();
+        Question q = questionrepo.findById(idq).orElse(null);
+        if (q != null) {
+            return q.getReponses();
+        }
+        return null;
     }
 }

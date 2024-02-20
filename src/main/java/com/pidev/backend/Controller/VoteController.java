@@ -22,8 +22,8 @@ public class VoteController {
     }
     @GetMapping("/nbr-vote/{id-question}")
     @ResponseBody
-    public void ajoutdeletevote( @PathVariable("id-question") String idq) {
-        voteserv.nbvotebyquest(idq);
+    public int ajoutdeletevote( @PathVariable("id-question") String idq) {
+         return voteserv.nbvotebyquest(idq);
 
     }
 }
