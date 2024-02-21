@@ -16,8 +16,8 @@ public class VoteController {
 
     @PostMapping("/add-delete-vote/{id-use}/{id-question}")
     @ResponseBody
-    public void ajoutdeletevote(@RequestBody Question p, @PathVariable("id-question") String idq, @PathVariable("id-use") String idu) {
-         voteserv.ajoutdeletevote(p,idu,idq);
+    public Vote ajoutdeletevote(@RequestBody Vote p, @PathVariable("id-question") String idq, @PathVariable("id-use") String idu) {
+         return voteserv.ajoutdeletevote(p,idu,idq);
 
     }
     @GetMapping("/nbr-vote/{id-question}")

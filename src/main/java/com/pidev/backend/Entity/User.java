@@ -2,6 +2,7 @@ package com.pidev.backend.Entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,9 +29,12 @@ public class User {
     private String id;
     private String nom;
     @DBRef
-    private List<Vote> votes;
+    @JsonIgnore
+    private List<Vote> votes=new ArrayList<Vote>();;
     @DBRef
+    @JsonIgnore
     private List<Question> questions;
     @DBRef
+    @JsonIgnore
     private List<Reponse> reponses;
 }

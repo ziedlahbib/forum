@@ -19,6 +19,7 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    private  String vote ="vote";
     @DBRef
     private Question question;
     @DBRef

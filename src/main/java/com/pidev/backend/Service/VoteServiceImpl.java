@@ -10,6 +10,7 @@ import com.pidev.backend.Repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,45 +22,67 @@ public class VoteServiceImpl implements IVoteService {
     @Autowired
     QuestionRepository questionrepo;
     @Override
-    public void ajoutdeletevote(Question quest,String idu, String idq) {
-        Vote v=new Vote();
+    public Vote ajoutdeletevote(Vote v, String idu, String idq) {
         Question question = questionrepo.findById(idq).orElse(null);
         User user = userrepo.findById(idu).orElse(null);
-        Vote vote =voterepo.findByQuestionAndUser(idq,idu);
-        if(vote==null){
-            v.setUser(user);
-            v.setQuestion(question);
-            if(user.getVotes()!=null&&question.getVotes()!=null){
-                user.getVotes().add(v);
-                question.getVotes().add(v);
+        if (user != null && question != null) {
+            Vote vote = voterepo.findByQuestionAndUser(idq, idu);
+            if (vote != null ) {
+                if(user.getVotes() != null && question.getVotes() != null){
+                    // Remove the vote from user's votes list
+                    user.getVotes().remove(vote);
+                    userrepo.save(user);
 
-                userrepo.save(user);
+                    // Remove the vote from question's votes list
+                    question.getVotes().remove(vote);
+                    questionrepo.save(question);
+
+                    // Remove the vote entity
+                    voterepo.delete(vote);
+                }
+                return vote;
+            } else {
                 voterepo.save(v);
-                questionrepo.save(question);
+                    if(user.getVotes() != null){
+                        user.getVotes().add(v);
+                        userrepo.save(user);
+                    }else{
+                        user.getVotes().add(v);
+                        userrepo.save(user);
+                    }
+                    if(question.getVotes() != null){
+                        question.getVotes().add(v);
+                        questionrepo.save(question);
+                    }else{
+                        question.getVotes().add(v);
+                        questionrepo.save(question);
+                    }
+
+
+
+
+                v.setUser(user);
+                v.setQuestion(question);
+
+                // Save the new vote entity
+                return voterepo.save(v);
+
             }
-
-
-        }else{
-            vote.setUser(null);
-            vote.setQuestion(null);
-            if (question != null && user != null && user.getVotes() != null && question.getVotes() != null) {
-                user.getVotes().remove(vote);
-                question.getVotes().remove(vote);
-                userrepo.save(user);
-                questionrepo.save(question);
-                voterepo.save(vote);
-                voterepo.delete(v);
-            }
-
 
         }
+        return v;
 
     }
 
+
     @Override
     public int nbvotebyquest(String idq) {
-        List<Question> ques =questionrepo.findAll();
-        return ques.size();
+        Question ques =questionrepo.findById(idq).orElse(null);
+
+        if (ques != null && ques.getVotes() != null) {
+            return ques.getVotes().size();
+        }
+        return  0;
     }
 
 }
