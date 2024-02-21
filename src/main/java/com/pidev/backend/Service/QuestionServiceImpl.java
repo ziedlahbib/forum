@@ -1,6 +1,7 @@
 package com.pidev.backend.Service;
 
 import com.pidev.backend.Entity.Question;
+import com.pidev.backend.Entity.SignalBadword;
 import com.pidev.backend.Entity.User;
 import com.pidev.backend.Iservice.IQuestionService;
 import com.pidev.backend.Repository.QuestionRepository;
@@ -16,6 +17,8 @@ public class QuestionServiceImpl implements IQuestionService {
     QuestionRepository questionrepo;
     @Autowired
     UserRepository userepo;
+    @Autowired
+    static SignalBadWordServImpl sbwserv;
 
     @Override
     public Question ajoutQuestion(Question q,String idu) {
@@ -28,7 +31,7 @@ public class QuestionServiceImpl implements IQuestionService {
             userepo.save(u);
         }
         q.setUser(u);
-        q.setContenue(this.hashbadword(q.getContenue()));
+        q.setContenue(this.hashbadword(q.getContenue(),q.getId(),idu));
         return questionrepo.save(q);
     }
 
@@ -56,7 +59,7 @@ public class QuestionServiceImpl implements IQuestionService {
     public List<Question> afficherQuestions() {
         return questionrepo.findAll();
     }
-    public static String hashbadword(String c) {
+    public static String hashbadword(String c, String idqr, String idu) {
 
         List<String> badWords = new ArrayList<>();
         badWords.add("Hello");
@@ -72,6 +75,7 @@ public class QuestionServiceImpl implements IQuestionService {
             for (int i = 0; i < words.length; i++) {
                 // If the word matches the bad word, replace it with ***
                 if (words[i].equalsIgnoreCase(badWord)) {
+                    sbwserv.ajouterbadword(idqr,idu,c);
                     words[i] = "***";
                 }
             }
