@@ -27,7 +27,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    private String nom;
+    private String firstName;
     @DBRef
     private List<Vote> votes=new ArrayList<Vote>();;
     @DBRef
