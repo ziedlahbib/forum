@@ -1,10 +1,8 @@
 package com.pidev.backend.Service;
 
-import com.pidev.backend.Entity.Question;
-import com.pidev.backend.Entity.Reponse;
-import com.pidev.backend.Entity.SignalBadword;
-import com.pidev.backend.Entity.User;
+import com.pidev.backend.Entity.*;
 import com.pidev.backend.Iservice.IQuestionService;
+import com.pidev.backend.Repository.HashtagRepository;
 import com.pidev.backend.Repository.QuestionRepository;
 import com.pidev.backend.Repository.SignaBAdWordRepository;
 import com.pidev.backend.Repository.UserRepository;
@@ -22,6 +20,10 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Autowired
     SignaBAdWordRepository sbwserv;
+    @Autowired
+    HAshtagServiceImpl hashserv;
+    @Autowired
+    HashtagRepository hashrepo;
 
     @Override
     public Question ajoutQuestion(Question q,String idu) {
@@ -36,6 +38,35 @@ public class QuestionServiceImpl implements IQuestionService {
         q.setUser(u);
         questionrepo.save(q);
         q.setContenue(this.hashbadword(q.getContenue(),q.getId(),idu));
+
+        for(Technologie t:q.getTech()){
+            Hashtag hashtag =new Hashtag();
+            hashtag.setTechnologie(t);
+            boolean  etat=hashserv.ajouthashtag(hashtag);
+            if(etat){
+                if(q.getHashtag()!=null){
+                    q.getHashtag().add(hashtag);
+                }else{
+                    List<Hashtag> hashtags =new ArrayList<Hashtag>();
+                    hashtags.add(hashtag);
+                    q.setHashtag(hashtags);
+                }
+            }else{
+                for(Hashtag h:hashrepo.findAll()){
+                    if(h.getTechnologie().equals(t)) {
+                        if(q.getHashtag()!=null){
+                            q.getHashtag().add(h);
+                        }else{
+                            List<Hashtag> hashtags =new ArrayList<Hashtag>();
+                            hashtags.add(h);
+                            q.setHashtag(hashtags);
+                        }
+                    }
+                }
+            }
+
+        }
+
         return questionrepo.save(q);
     }
 
