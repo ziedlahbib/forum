@@ -14,4 +14,9 @@ public class UserSErviceImpl implements IUserService {
     public User ajoutuser(User u) {
         return userrepo.save(u);
     }
+
+    @Override
+    public User afficheuser(String idu) {
+        return userrepo.findById(idu).orElse(null);
+    }
 }

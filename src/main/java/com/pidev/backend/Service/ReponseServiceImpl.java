@@ -22,13 +22,15 @@ public class ReponseServiceImpl implements IReponseService {
     UserRepository userrepo;
     @Autowired
     QuestionRepository questionrepo;
+    @Autowired
+    QuestionServiceImpl questserv;
 
     @Override
     public Reponse ajoutReponse(Reponse q,String idq ,String iduse) {
 
         Question qu =questionrepo.findById(idq).orElse(null);
         User u=userrepo.findById(iduse).orElse(null);
-        String contenu = QuestionServiceImpl.hashbadword(q.getContenue(),qu.getId(),u.getId()) ;
+        String contenu = questserv.hashbadword(q.getContenue(),qu.getId(),u.getId()) ;
         q.setContenue(contenu);
         q.setQuestion(qu);
         q.setUser(u);

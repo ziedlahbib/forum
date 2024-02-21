@@ -19,33 +19,13 @@ public class SignalBadWordServImpl implements ISignalBadWordService {
     @Autowired
     SignaBAdWordRepository sbwrepo;
     @Autowired
-    QuestionRepository questrepo;
+    QuestionServiceImpl questrepo;
     @Autowired
-    UserRepository userrpo;
+    UserSErviceImpl userrpo;
     @Autowired
-    ReponseRepository reponserepo;
-
-    @Override
-    public SignalBadword ajouterbadword(String idq,String idu,String s) {
-        SignalBadword sbw=new SignalBadword();
-        Question q = questrepo.findById(idq).orElse(null);
-        Reponse r = reponserepo.findById(idq).orElse(null);
-        User u = userrpo.findById(idu).orElse(null);
-        if(u!=null&&(q!=null||r!=null)){
-            sbw.setUser(u);
-            if(r!=null){
-                sbw.setQuestion(q);
-                sbw.setBadword(s);
-            }
-            if(q!=null){
-                sbw.setQuestion(q);
-                sbw.setBadword(s);
-            }
+    ReponseServiceImpl reponserepo;
 
 
-        }
-        return sbwrepo.save(sbw);
-    }
 
     @Override
     public List<SignalBadword> afficheBadword() {

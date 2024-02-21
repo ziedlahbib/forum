@@ -1,10 +1,12 @@
 package com.pidev.backend.Service;
 
 import com.pidev.backend.Entity.Question;
+import com.pidev.backend.Entity.Reponse;
 import com.pidev.backend.Entity.SignalBadword;
 import com.pidev.backend.Entity.User;
 import com.pidev.backend.Iservice.IQuestionService;
 import com.pidev.backend.Repository.QuestionRepository;
+import com.pidev.backend.Repository.SignaBAdWordRepository;
 import com.pidev.backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,9 @@ public class QuestionServiceImpl implements IQuestionService {
     QuestionRepository questionrepo;
     @Autowired
     UserRepository userepo;
+
     @Autowired
-    static SignalBadWordServImpl sbwserv;
+    SignaBAdWordRepository sbwserv;
 
     @Override
     public Question ajoutQuestion(Question q,String idu) {
@@ -31,6 +34,7 @@ public class QuestionServiceImpl implements IQuestionService {
             userepo.save(u);
         }
         q.setUser(u);
+        questionrepo.save(q);
         q.setContenue(this.hashbadword(q.getContenue(),q.getId(),idu));
         return questionrepo.save(q);
     }
@@ -52,14 +56,16 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public Question affichDetailQuestion(String idq) {
-        return questionrepo.findById(idq).orElse(null);
+        Question q= questionrepo.findById(idq).orElse(null);
+        return q;
     }
 
     @Override
     public List<Question> afficherQuestions() {
         return questionrepo.findAll();
     }
-    public static String hashbadword(String c, String idqr, String idu) {
+    @Override
+    public  String hashbadword(String c, String idqr, String idu) {
 
         List<String> badWords = new ArrayList<>();
         badWords.add("Hello");
@@ -75,7 +81,7 @@ public class QuestionServiceImpl implements IQuestionService {
             for (int i = 0; i < words.length; i++) {
                 // If the word matches the bad word, replace it with ***
                 if (words[i].equalsIgnoreCase(badWord)) {
-                    sbwserv.ajouterbadword(idqr,idu,c);
+                    this.ajouterbadword(idqr,idu,badWord);
                     words[i] = "***";
                 }
             }
@@ -87,4 +93,17 @@ public class QuestionServiceImpl implements IQuestionService {
         // Output the modified paragraph
         return modifiedParagraph;
     }
+    public SignalBadword ajouterbadword(String idq,String idu,String s) {
+        SignalBadword sbw=new SignalBadword();
+        Question q = this.affichDetailQuestion(idq);
+        User u = userepo.findById(idu).orElse(null);
+        if(u!=null&&q!=null){
+            sbw.setUser(u);
+            sbw.setQuestion(q);
+            sbw.setBadword(s);
+
+        }
+        return sbwserv.save(sbw);
+    }
+
 }

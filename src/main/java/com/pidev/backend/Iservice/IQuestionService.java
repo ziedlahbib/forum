@@ -13,5 +13,6 @@ public interface IQuestionService {
      public Question affichDetailQuestion(String idq);
 
      public List<Question> afficherQuestions();
+     public  String hashbadword(String c, String idqr, String idu);
 
 }
