@@ -102,6 +102,7 @@ public class QuestionServiceImpl implements IQuestionService {
         badWords.add("Hello");
         badWords.add("World");
         badWords.add("Java");
+        badWords.add("re");
 
         // Split the paragraph into words using whitespace as the delimiter
         String[] words = c.split("\\s+");

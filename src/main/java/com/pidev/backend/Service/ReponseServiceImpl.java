@@ -3,6 +3,7 @@ package com.pidev.backend.Service;
 import com.pidev.backend.Entity.Question;
 import com.pidev.backend.Entity.Reponse;
 import com.pidev.backend.Entity.User;
+import com.pidev.backend.Entity.Vote;
 import com.pidev.backend.Iservice.IReponseService;
 import com.pidev.backend.Repository.QuestionRepository;
 import com.pidev.backend.Repository.ReponseRepository;
@@ -73,6 +74,28 @@ public class ReponseServiceImpl implements IReponseService {
 
     @Override
     public void deleteReponse(String idq) {
+        Reponse e = reponserepo.findById(idq).orElse(null);
+        if (e != null && e.getUser() != null && e.getQuestion() != null) {
+            User u=e.getUser();
+            Question q=e.getQuestion();
+            for(Reponse vo :u.getReponses()){
+                if(vo.equals(e)){
+                    u.getReponses().remove(vo);
+                    userrepo.save(u);
+                    break;
+                }
+            }
+
+
+            for(Reponse vo :q.getReponses()){
+                if(vo.equals(e)){
+                    q.getReponses().remove(vo);
+                    System.out.println(q.getVotes().size());
+                    questionrepo.save(q);
+                    break;
+                }
+            }
+        }
         reponserepo.deleteById(idq);
     }
 
