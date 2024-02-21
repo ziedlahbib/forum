@@ -3,10 +3,10 @@ package com.pidev.backend.Controller;
 import com.pidev.backend.Entity.Question;
 import com.pidev.backend.Service.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @CrossOrigin(origins = "*",exposedHeaders="Access-Control-Allow-Origin" )
 @RestController
@@ -21,7 +21,7 @@ public class QuestionController {
         return questionserv.ajoutQuestion(p,idu);
 
     }
-    @GetMapping("/get-question/{id-question}")
+    @GetMapping("/get-questionbyid/{id-question}")
     @ResponseBody
     public Question getquestionbyid(@PathVariable("id-question") String idq) {
         return questionserv.affichDetailQuestion(idq);
@@ -29,7 +29,7 @@ public class QuestionController {
     }
     @GetMapping("/get-questions")
     @ResponseBody
-    public List<Question> getquestionbyid() {
+    public List<Question> afficherlesquestions() {
         return questionserv.afficherQuestions();
 
     }

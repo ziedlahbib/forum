@@ -26,13 +26,16 @@ public class Question {
     private String contenue;
     private List<Technologie> tech;
     @DBRef
+
     private List<Hashtag> hashtag;
     @DBRef
+
     private List<Reponse> reponses;
     @DBRef
-    @JsonIgnore
+
     private List<Vote> votes=new ArrayList<Vote>();
     @DBRef
+
     private User user;
 
 }

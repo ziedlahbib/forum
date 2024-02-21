@@ -8,6 +8,7 @@ import com.pidev.backend.Repository.QuestionRepository;
 import com.pidev.backend.Repository.ReponseRepository;
 import com.pidev.backend.Repository.UserRepository;
 import com.pidev.backend.Repository.VoteRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,31 @@ public class ReponseServiceImpl implements IReponseService {
 
         Question qu =questionrepo.findById(idq).orElse(null);
         User u=userrepo.findById(iduse).orElse(null);
-        String contenu = questserv.hashbadword(q.getContenue(),qu.getId(),u.getId()) ;
-        q.setContenue(contenu);
-        q.setQuestion(qu);
-        q.setUser(u);
+        if(qu!=null&&u!=null){
+            String contenu = questserv.hashbadword(q.getContenue(),qu.getId(),u.getId()) ;
+            q.setContenue(contenu);
+            q.setQuestion(qu);
+            q.setUser(u);
+            reponserepo.save(q);
+            if(qu.getReponses()!=null){
+                qu.getReponses().add(q);
+                questionrepo.save(qu);
+            }else{
+                List<Reponse> responses =new ArrayList<Reponse>();
+                responses.add(q);
+                qu.setReponses(responses);
+                questionrepo.save(qu);
+            }
+            if(u.getReponses()!=null){
+                u.getReponses().add(q);
+                userrepo.save(u);
+            }else{
+                List<Reponse> responses =new ArrayList<Reponse>();
+                responses.add(q);
+                u.setReponses(responses);
+                userrepo.save(u);;
+            }
+        }
         return reponserepo.save(q);
     }
 

@@ -1,6 +1,7 @@
 package com.pidev.backend.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
@@ -22,9 +23,11 @@ public class Reponse {
     private String id;
     private String contenue;
     @DBRef
+    @JsonIgnore
     private Question question;
 
     @DBRef
+    @JsonIgnore
     private User user;
 
 
