@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class VoteServiceImpl implements IVoteService {
@@ -30,12 +31,27 @@ public class VoteServiceImpl implements IVoteService {
             if (vote != null ) {
                 if(user.getVotes() != null && question.getVotes() != null){
                     // Remove the vote from user's votes list
-                    user.getVotes().remove(vote);
-                    userrepo.save(user);
+
+                   for(Vote vo :user.getVotes()){
+                       if(vo.equals(vote)){
+                           user.getVotes().remove(vo);
+                           userrepo.save(user);
+                           break;
+                       }
+                   }
+
+
+                    for(Vote vo :question.getVotes()){
+                        if(vo.equals(vote)){
+                            question.getVotes().remove(vo);
+                            System.out.println(question.getVotes().size());
+                            questionrepo.save(question);
+                            break;
+                        }
+                    }
 
                     // Remove the vote from question's votes list
-                    question.getVotes().remove(vote);
-                    questionrepo.save(question);
+
 
                     // Remove the vote entity
                     voterepo.delete(vote);
@@ -43,20 +59,20 @@ public class VoteServiceImpl implements IVoteService {
                 return vote;
             } else {
                 voterepo.save(v);
-                    if(user.getVotes() != null){
-                        user.getVotes().add(v);
-                        userrepo.save(user);
-                    }else{
-                        user.getVotes().add(v);
-                        userrepo.save(user);
-                    }
-                    if(question.getVotes() != null){
-                        question.getVotes().add(v);
-                        questionrepo.save(question);
-                    }else{
-                        question.getVotes().add(v);
-                        questionrepo.save(question);
-                    }
+                if(user.getVotes() != null){
+                    user.getVotes().add(v);
+                    userrepo.save(user);
+                }else{
+                    user.getVotes().add(v);
+                    userrepo.save(user);
+                }
+                if(question.getVotes() != null){
+                    question.getVotes().add(v);
+                    questionrepo.save(question);
+                }else{
+                    question.getVotes().add(v);
+                    questionrepo.save(question);
+                }
 
 
 
@@ -75,6 +91,10 @@ public class VoteServiceImpl implements IVoteService {
     }
 
 
+
+
+
+
     @Override
     public int nbvotebyquest(String idq) {
         Question ques =questionrepo.findById(idq).orElse(null);
@@ -84,5 +104,9 @@ public class VoteServiceImpl implements IVoteService {
         }
         return  0;
     }
+
+
+
+
 
 }

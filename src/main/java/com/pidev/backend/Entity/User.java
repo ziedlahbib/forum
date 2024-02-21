@@ -29,7 +29,6 @@ public class User {
     private String id;
     private String nom;
     @DBRef
-    @JsonIgnore
     private List<Vote> votes=new ArrayList<Vote>();;
     @DBRef
     @JsonIgnore
