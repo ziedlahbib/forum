@@ -74,7 +74,7 @@ public class QuestionServiceImpl implements IQuestionService {
     public Question updateQuestion(String idq, Question q) {
         Question qu =questionrepo.findById(idq).orElse(null);
         if (qu != null) {
-            qu.setContenue(q.getContenue());
+            qu.setContenue(this.hashbadword(q.getContenue(),q.getId(),qu.getUser().getId()));
             return questionrepo.save(qu);
         }
         return qu;
