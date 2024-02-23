@@ -70,50 +70,49 @@ public class QuestionServiceImpl implements IQuestionService {
         return questionrepo.save(q);
     }
 
-    @Override
     public Question updateQuestion(String idq, Question q) {
-        Question qu =questionrepo.findById(idq).orElse(null);
+        Question qu = questionrepo.findById(idq).orElse(null);
         if (qu != null) {
-            qu.setContenue(this.hashbadword(q.getContenue(),qu.getId(),qu.getUser().getId()));
-            if(q.getTech()!=null){
+            qu.setContenue(this.hashbadword(q.getContenue(), qu.getId(), qu.getUser().getId()));
+
+            // Mise à jour des technologies si elles sont fournies
+            if (q.getTech() != null && !q.getTech().isEmpty()) {
                 qu.setTech(q.getTech());
-                qu.setHashtag(null);
-                for(Technologie t:q.getTech()){
-                    Hashtag hashtag =new Hashtag();
+                qu.setHashtag(null); // Supprimer les hashtags existants car les technologies sont mises à jour
+                for (Technologie t : q.getTech()) {
+                    Hashtag hashtag = new Hashtag();
                     hashtag.setTechnologie(t);
-                    boolean  etat=hashserv.ajouthashtag(hashtag);
-                    if(etat){
-                        if(q.getHashtag()!=null){
+                    boolean etat = hashserv.ajouthashtag(hashtag);
+                    if (etat) {
+                        if (qu.getHashtag() != null) {
                             qu.getHashtag().add(hashtag);
-                            questionrepo.save(qu);
-                        }else{
-                            List<Hashtag> hashtags =new ArrayList<Hashtag>();
+                        } else {
+                            List<Hashtag> hashtags = new ArrayList<>();
                             hashtags.add(hashtag);
                             qu.setHashtag(hashtags);
-                            questionrepo.save(qu);
                         }
-                    }else{
-                        for(Hashtag h:hashrepo.findAll()){
-                            if(h.getTechnologie().equals(t)) {
-                                if(q.getHashtag()!=null){
+                    } else {
+                        for (Hashtag h : hashrepo.findAll()) {
+                            if (h.getTechnologie().equals(t)) {
+                                if (qu.getHashtag() != null) {
                                     qu.getHashtag().add(h);
-                                    questionrepo.save(qu);
-                                }else{
-                                    List<Hashtag> hashtags =new ArrayList<Hashtag>();
+                                } else {
+                                    List<Hashtag> hashtags = new ArrayList<>();
                                     hashtags.add(h);
                                     qu.setHashtag(hashtags);
-                                    questionrepo.save(qu);
                                 }
                             }
                         }
                     }
-
                 }
             }
+
+            // Sauvegarde de la question une seule fois après avoir terminé toutes les opérations de mise à jour
             return questionrepo.save(qu);
         }
         return qu;
     }
+
 
     @Override
     public void deleteQuestion(String idq) {
