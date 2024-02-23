@@ -74,31 +74,35 @@ public class QuestionServiceImpl implements IQuestionService {
     public Question updateQuestion(String idq, Question q) {
         Question qu =questionrepo.findById(idq).orElse(null);
         if (qu != null) {
-            qu.setContenue(this.hashbadword(q.getContenue(),q.getId(),qu.getUser().getId()));
-            if(q.getTech()==null){
-                questionrepo.save(qu);
-            }else{
+            qu.setContenue(this.hashbadword(q.getContenue(),qu.getId(),qu.getUser().getId()));
+            if(q.getTech()!=null){
+                qu.setTech(q.getTech());
+                qu.setHashtag(null);
                 for(Technologie t:q.getTech()){
                     Hashtag hashtag =new Hashtag();
                     hashtag.setTechnologie(t);
                     boolean  etat=hashserv.ajouthashtag(hashtag);
                     if(etat){
                         if(q.getHashtag()!=null){
-                            q.getHashtag().add(hashtag);
+                            qu.getHashtag().add(hashtag);
+                            questionrepo.save(qu);
                         }else{
                             List<Hashtag> hashtags =new ArrayList<Hashtag>();
                             hashtags.add(hashtag);
-                            q.setHashtag(hashtags);
+                            qu.setHashtag(hashtags);
+                            questionrepo.save(qu);
                         }
                     }else{
                         for(Hashtag h:hashrepo.findAll()){
                             if(h.getTechnologie().equals(t)) {
                                 if(q.getHashtag()!=null){
-                                    q.getHashtag().add(h);
+                                    qu.getHashtag().add(h);
+                                    questionrepo.save(qu);
                                 }else{
                                     List<Hashtag> hashtags =new ArrayList<Hashtag>();
                                     hashtags.add(h);
-                                    q.setHashtag(hashtags);
+                                    qu.setHashtag(hashtags);
+                                    questionrepo.save(qu);
                                 }
                             }
                         }
@@ -108,7 +112,7 @@ public class QuestionServiceImpl implements IQuestionService {
             }
             return questionrepo.save(qu);
         }
-        return questionrepo.save(qu);
+        return qu;
     }
 
     @Override
