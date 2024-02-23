@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -24,4 +25,15 @@ public class Hashtag {
     private Technologie technologie;
     @DBRef
     private List<Question> questions;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Hashtag other = (Hashtag) obj;
+        return Objects.equals(this.id, other.id);
+    }
 }

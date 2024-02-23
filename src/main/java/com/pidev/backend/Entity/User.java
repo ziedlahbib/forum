@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "User")
+@Document(collection = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -64,7 +64,7 @@ public class ReponseServiceImpl implements IReponseService {
     public Reponse updateReponse(String idq, Reponse q) {
         Reponse qu =reponserepo.findById(idq).orElse(null);
         if (qu != null) {
-            String contenu = questserv.hashbadword(q.getContenue(),qu.getId(),q.getUser().getId()) ;
+            String contenu = questserv.hashbadword(q.getContenue(),qu.getId(),qu.getUser().getId()) ;
             qu.setContenue(contenu);
             return reponserepo.save(qu);
         }
