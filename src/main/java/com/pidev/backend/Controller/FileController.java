@@ -75,6 +75,13 @@ public class FileController {
    
     
   }
+    @GetMapping("/filesbyreponse/{id}")
+    public List<FileDB> getFilebyreponse(@PathVariable String id) {
+        return storageService.getFileByReponse(id);
+
+
+
+    }
 
   @PutMapping("/affecter-fileToReponse/{id-reponse}/{files}")
 	@ResponseBody
