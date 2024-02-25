@@ -159,6 +159,20 @@ public class QuestionServiceImpl implements IQuestionService {
         // Output the modified paragraph
         return modifiedParagraph;
     }
+
+    @Override
+    public List<Question> getQuestionsByContenue(String name) {
+        List<Question> search =new ArrayList<Question>();
+        // TODO Auto-generated method stub
+        List<Question> questions=questionrepo.findAll();
+        for(Question a : questions) {
+            if(a.getContenue().contains(name)) {
+                search.add(a);
+            }
+        }
+        return search;
+    }
+
     public SignalBadword ajouterbadword(String idq,String idu,String s) {
         SignalBadword sbw=new SignalBadword();
         Question q = this.affichDetailQuestion(idq);

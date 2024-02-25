@@ -33,6 +33,13 @@ public class QuestionController {
         return questionserv.afficherQuestions();
 
     }
+    @GetMapping("/get-questions-by-contenue")
+    @ResponseBody
+    public List<Question> affichQuestionsByName(@RequestParam("contenue") String contenue)
+    {
+        return questionserv.getQuestionsByContenue(contenue);
+
+    }
     @PutMapping("/update-question/{id-question}")
     @ResponseBody
     public Question upadatequestion(@RequestBody Question t, @PathVariable("id-question") String idq) {
