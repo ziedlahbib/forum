@@ -25,11 +25,15 @@ public class FileStorageService {
   @Autowired
   ReponseRepository reponserepo;
 
-  public String store(MultipartFile file) throws IOException {
-	    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	    FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
-	    fileDBRepo.save(FileDB);
-	    return FileDB.getId();
+  public List<String> store(List<MultipartFile> file) throws IOException {
+	  List<String> ls=new ArrayList<String>();
+	  for(MultipartFile f:file){
+		  String fileName = StringUtils.cleanPath(f.getOriginalFilename());
+		  FileDB FileDB = new FileDB(fileName, f.getContentType(), f.getBytes());
+		  fileDBRepo.save(FileDB);
+		   ls.add(FileDB.getId());
+	  }
+	  return ls;
 	  }
   public void deletefile(String idfile) {
 	  FileDB f =fileDBRepo.findById(idfile).orElse(null);
@@ -59,9 +63,10 @@ public class FileStorageService {
 				t.setFiles(lfs);
 				reponserepo.save(t);
 			}else{
+				t.getFiles().add(f);
+				reponserepo.save(t);
 			}
-			t.getFiles().add(f);
-			reponserepo.save(t);
+
 
 		}
 
