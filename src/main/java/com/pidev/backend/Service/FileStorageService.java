@@ -37,8 +37,8 @@ public class FileStorageService {
 	}
 
   public void deletefile(String idfile) {
-	  FileDB f =fileDBRepo.findById(idfile).orElse(null);
-	  fileDBRepo.delete(f);
+
+	  fileDBRepo.deleteById(idfile);
   }
   public FileDB getFile(String id) {
     return fileDBRepo.findById(id).orElse(null);
